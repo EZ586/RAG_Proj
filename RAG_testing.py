@@ -91,11 +91,11 @@ if __name__ == "__main__":
         bm25_retriever = BM25Retriever.from_texts(text_list)
         bm25_retriever.k = 2
         rel_doc = bm25_retriever.get_relevant_documents("What is the weaknesses relating to the paper on influenza?")
-        for doc in rel_doc:
-            print(20 * '^')
-            print(doc.page_content)
-            print(20 * '@')
-        print(20 * '%')
+        # for doc in rel_doc:
+        #     print(20 * '^')
+        #     print(doc.page_content)
+        #     print(20 * '@')
+        # print(20 * '%')
 
         # intialize FAISS Retriever - Dense retriever 
         persist_directory = "new_db"
@@ -109,17 +109,17 @@ if __name__ == "__main__":
         # faiss_vectorstore = FAISS.from_texts(text_list, embedding)
         # faiss_retriever = faiss_vectorstore.as_retriever(search_kwargs={"k": 2})
         fais_rel_doc = retriever.get_relevant_documents("What assessments were made about Chat-GPT?")
-        for doc in fais_rel_doc:
-            print(20 * '^')
-            print(doc.page_content)
-            print(20 * '@')
+        # for doc in fais_rel_doc:
+        #     print(20 * '^')
+        #     print(doc.page_content)
+        #     print(20 * '@')
 
         # Ensemble Retriever
         ensemble_retriever = EnsembleRetriever(retrievers=[bm25_retriever, retriever],
                                        weights=[0.5, 0.5])
-        docs = ensemble_retriever.get_relevant_documents("What assessments were made about Chat-GPT?")
+        docs = ensemble_retriever.get_relevant_documents("What are the 3 main parts of IEEE citation?")
         print('\n' + 20 * '$')
-        for doc in fais_rel_doc:
+        for doc in docs:
             print(20 * '^')
             print(doc.page_content)
             print(20 * '@')

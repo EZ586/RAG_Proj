@@ -18,6 +18,7 @@ from langchain.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain import embeddings
 from langchain.chains import RetrievalQA
+from langchain.retrievers import BM25Retriever, EnsembleRetriever
 
 
 # Initialize Flask app
@@ -89,6 +90,32 @@ def process_query():
     response = llm_response['result']
 
     return jsonify({"message": response}), 200
+
+# Process Query
+@app.route("/hybrid", methods=["POST"])
+def process_hybrid():
+    query = request.form.get("query")  # Using .get() to avoid KeyError
+    if not query:
+        return jsonify({"error": "Query parameter is missing"}), 400
+    
+    folder_path = './uploads'
+    loader = DirectoryLoader(folder_path, glob="*.pdf", loader_cls=PyMuPDFLoader)
+    document = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap = 400)
+    doc_list = text_splitter.split_documents(document)
+    text_list = [text.page_content for text in doc_list]
+
+    bm25_retriever = BM25Retriever.from_texts(text_list)
+    bm25_retriever.k = 3
+
+    retriever = vectordb.as_retriever(search_kwargs={"k":3})
+
+    ensemble_retriever = EnsembleRetriever(retrievers=[bm25_retriever, retriever],
+                                       weights=[0.5, 0.5])
+    docs = ensemble_retriever.get_relevant_documents(query)
+    pages = [doc.page_content for doc in docs]
+
+    return jsonify({"message": pages}), 200
 
 # Function to process text with RAG pipeline
 def create_vectordb():
