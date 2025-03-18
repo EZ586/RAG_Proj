@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css"; // Import CSS file
 
 function App() {
-  const [hybrid_mess, setHybrid_mess] = useState("None");
+  const [hybrid_mess, setHybrid_mess] = useState([]);
   const [pdfResponse, setPdfResponse] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -113,7 +113,7 @@ function App() {
 
       const data = await response.json();
       if (data.message) {
-        setHybrid_mess(data.message); // Store query response
+        setHybrid_mess(data.result); // Store query response
       } else {
         console.error("Error processing query:", data.error);
       }
@@ -135,85 +135,97 @@ function App() {
   }, []);
 
   return (
-    <div>
-        <div className="app">
+    <div className="app">
+      <div className="section">
         <h1 className="title">Upload a PDF for RAG Processing</h1>
 
-{/* Custom File Input */}
-<label className="file-label">
-  Choose PDF File
-  <input
-    type="file"
-    accept=".pdf"
-    onChange={handleFilePick}
-    className="file-input"
-  />
-</label>
+        {/* Custom File Input */}
+        <label className="file-label">
+          Choose PDF File
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFilePick}
+            className="file-input"
+          />
+        </label>
 
-{/* Display Selected File Name */}
-{fileName && <p className="file-name">Selected File: {fileName}</p>}
+        {/* Upload Button */}
+        <button
+          onClick={handleFileUpload}
+          disabled={!selectedFile || loading}
+          className={selectedFile ? "button" : "button-disabled"}
+        >
+          {loading ? "Uploading..." : "Upload & Process"}
+        </button>
 
-{/* Upload Button */}
-<button
-  onClick={handleFileUpload}
-  disabled={!selectedFile || loading}
-  className={selectedFile ? "button" : "button-disabled"}
->
-  {loading ? "Uploading..." : "Upload & Process"}
-</button>
-{/* PDF Confirmation */}
-{pdfResponse && (
-  <div>
-    <p className="response-text">{pdfResponse}</p>
-  </div>
-)}
+        {/* Display Selected File Name */}
+        {fileName && <p className="file-name">Selected File: {fileName}</p>}
 
-{/* Display Uploaded Files */}
-{uploadedFiles.length > 0 && (
-  <div className="uploaded-files">
-    <h2>Uploaded Files:</h2>
-    <ul>
-      {uploadedFiles.map((file, index) => (
-        <li key={index}>{file}</li>
-      ))}
-    </ul>
-  </div>
-)}
+        {/* PDF Confirmation */}
+        {pdfResponse && (
+          <div>
+            <p className="response-text">{pdfResponse}</p>
+          </div>
+        )}
 
-{/* Query Input */}
-<h2 className="query-title">Ask a Question</h2>
-<input
-  type="text"
-  placeholder="Enter your query"
-  value={query}
-  onChange={(e) => setQuery(e.target.value)}
-  className="query-input"
-/>
-<button
-  onClick={handleQuerySubmit}
-  disabled={loading || !query.trim()}
-  className="query-button"
->
-  {loading ? "Processing..." : "Dense Query"}
-</button>
-<button
-  onClick={handleHybridSubmit}
-  disabled={loading || !query.trim()}
-  className="query-button"
->
-  {loading ? "Processing..." : "Hybrid Query"}
-</button>
-{/* Query Response */}
-{queryResponse && (
-  <div>
-    <h2 className="response-title">Query Response:</h2>
-    <p className="response-text">{queryResponse}</p>
-  </div>
-)}
-        </div>
-      <div className="app">
-      <text>{hybrid_mess}</text>
+        {/* Display Uploaded Files */}
+        {uploadedFiles.length > 0 && (
+          <div className="uploaded-files">
+            <h2>Uploaded Files:</h2>
+            <ul>
+              {uploadedFiles.map((file, index) => (
+                <li key={index}>{file}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Query Input */}
+        <h2 className="query-title">Ask a Question</h2>
+        <input
+          type="text"
+          placeholder="Enter your query"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="query-input"
+        />
+        <button
+          onClick={handleQuerySubmit}
+          disabled={loading || !query.trim()}
+          className="query-button"
+        >
+          {loading ? "Processing..." : "Dense Query"}
+        </button>
+        <button
+          onClick={handleHybridSubmit}
+          disabled={loading || !query.trim()}
+          className="query-button"
+        >
+          {loading ? "Processing..." : "Hybrid Query"}
+        </button>
+        {/* Query Response */}
+        {queryResponse && (
+          <div>
+            <h2 className="response-title">Query Response:</h2>
+            <p className="response-text">{queryResponse}</p>
+          </div>
+        )}
       </div>
+      {hybrid_mess.length == 0 ? (
+        <div></div>
+      ) : (
+        <div className="section">
+          <h1 className="title">Hybrid Results</h1>
+          {hybrid_mess.map((doc_item, index) => (
+            <div key={index} className="hybrid-section">
+              <h3>{doc_item.title}</h3>
+              <p>Rank: {doc_item.rank}</p>
+              {doc_item.page_content}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

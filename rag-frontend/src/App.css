@@ -1,102 +1,140 @@
 /* General Page Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .app {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 400px;
-  }
-  
-  /* Title */
-  .title {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  /* File Input */
-  .file-label {
-    display: inline-block;
-    background: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-bottom: 10px;
-  }
-  
-  .file-input {
-    display: none;
-  }
-  
-  /* File Name Display */
-  .file-name {
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 5px;
-  }
-  
-  /* Buttons */
-  .button,
-  .query-button {
-    background: #28a745;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-top: 10px;
-    width: 100%;
-  }
-  
-  .button-disabled {
-    background: #ccc;
-    color: #666;
-    cursor: not-allowed;
-  }
-  
-  /* Query Input */
-  .query-title {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #333;
-  }
-  
-  .query-input {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  /* Response Text */
-  .response-title {
-    margin-top: 15px;
-    font-size: 1.2em;
-    color: #333;
-  }
-  
-  .response-text {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+}
+.section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: fit-content;
+  width: 400px;
+}
+
+/* Title */
+.title {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* File Input */
+.file-label {
+  display: inline-block;
+  background: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.file-input {
+  display: none;
+}
+
+/* File Name Display */
+.file-name {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 5px;
+}
+
+/* Buttons */
+.query-button {
+  background: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.button {
+  cursor: not-allowed;
+  margin-left: 10px;
+  display: inline-block;
+  background: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+.button-disabled {
+  cursor: not-allowed;
+  margin-left: 10px;
+  display: inline-block;
+  background: #2f363d17;
+  color: rgb(3, 3, 3);
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+/* Query Input */
+.query-title {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.query-input {
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Response Text */
+.response-title {
+  margin-top: 15px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.response-text {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 5px;
+  color: #555;
+  font-size: 0.95em;
+  text-align: left;
+}
+
+.hybrid-section {
     background: #f8f9fa;
-    padding: 10px;
+    padding: 15px;
+    margin: 10px 0;
     border-radius: 5px;
-    margin-top: 5px;
-    color: #555;
-    font-size: 0.95em;
+    height: 200px;  /* Fixed height */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    border: 1px solid #ddd;
     text-align: left;
   }
-  
